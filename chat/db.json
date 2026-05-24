@@ -1,0 +1,53 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "name": "João",
+      "email": "joao@gmail.com",
+      "password": "123456",
+      "avatar": "https://i.pravatar.cc/150?img=1"
+    },
+    {
+      "id": "2",
+      "name": "Maria",
+      "email": "maria@gmail.com",
+      "password": "123456",
+      "avatar": "https://i.pravatar.cc/150?img=2"
+    }
+  ],
+  "messages": [
+    {
+      "id": "ZJlpR-FCdLk",
+      "senderId": "1",
+      "receiverId": "2",
+      "text": "Olá, Maria!",
+      "createdAt": "2026-05-24T18:42:05.308Z",
+      "read": true
+    },
+    {
+      "id": "Ud9FZ0Dvp4o",
+      "senderId": "2",
+      "receiverId": "1",
+      "text": "Olá, João!",
+      "createdAt": "2026-05-24T18:42:37.056Z",
+      "read": true
+    },
+    {
+      "id": "VuYsRqW5ti4",
+      "senderId": "2",
+      "receiverId": "1",
+      "text": "Tudo bom?",
+      "createdAt": "2026-05-24T18:46:34.123Z",
+      "read": true
+    },
+    {
+      "id": "rYpEBujQWtE",
+      "senderId": "2",
+      "receiverId": "1",
+      "text": "teste",
+      "createdAt": "2026-05-24T18:49:19.453Z",
+      "read": true
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}

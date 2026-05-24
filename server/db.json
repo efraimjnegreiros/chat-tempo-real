@@ -1,0 +1,35 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "name": "Rubens",
+      "email": "rubens@gmail.com",
+      "password": "123456",
+      "avatar": "https://i.ibb.co/67bZV8Sp/7fa29faa7b96.jpg"
+    },
+    {
+      "id": "2",
+      "name": "Faltante",
+      "email": "ingrid@gmail.com",
+      "password": "123456",
+      "avatar": "https://i.ibb.co/ndHvgh2/dc627ac05a2b.jpg"
+    },
+    {
+      "id": "3",
+      "name": "Efraim Negreiros",
+      "email": "efraim@gmail.com",
+      "password": "123456",
+      "avatar": "https://i.ibb.co/b5Vzmq07/a3bb19f65225.jpg"
+    }
+  ],
+  "messages": [
+    {
+      "id": "755c13d2-4afd-4485-9438-d99a1ba255f4",
+      "senderId": "3",
+      "receiverId": "1",
+      "text": "aaa",
+      "read": true,
+      "createdAt": "2026-05-24T19:03:23.205Z"
+    }
+  ]
+}
