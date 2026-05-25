@@ -67,7 +67,21 @@ app.get("/messages", (req, res) => {
   const { messages } = loadDB();
   res.json(messages);
 });
+app.get("/users/:id", (req, res) => {
+  const { users } = loadDB();
+  const user = users.find((u) => u.id === req.params.id);
+  if (!user) return res.status(404).json({ error: "Usuário não encontrado" });
+  res.json(user);
+});
 
+app.patch("/users/:id", (req, res) => {
+  const db = loadDB();
+  const user = db.users.find((u) => u.id === req.params.id);
+  if (!user) return res.status(404).json({ error: "Usuário não encontrado" });
+  Object.assign(user, req.body);
+  saveDB(db);
+  res.json(user);
+});
 app.post("/messages", (req, res) => {
   const db = loadDB();
   const { id, senderId, receiverId, text, createdAt } = req.body;
