@@ -1,167 +1,3 @@
-// import { useEffect, useState } from "react";
-// import { api } from "../services/api";
-// import Sidebar from "../components/Sidebar";
-// import ChatBox from "../components/ChatBox";
-
-// export default function Home({ currentUser, logout }) {
-//   const [users, setUsers] = useState([]);
-//   const [selectedUser, setSelectedUser] = useState(null);
-//   const [messages, setMessages] = useState([]); // ← novo
-
-//   useEffect(() => {
-//     loadUsers();
-//     loadMessages();
-
-//     const interval = setInterval(loadMessages, 1000); // polling para bolinha
-//     return () => clearInterval(interval);
-//   }, []);
-
-//   async function loadUsers() {
-//     try {
-//       const response = await api.get("/users");
-//       setUsers(response.data.filter((u) => u.id !== currentUser.id));
-//     } catch (err) {
-//       console.log(err);
-//     }
-//   }
-
-//   async function loadMessages() {
-//     try {
-//       const response = await api.get("/messages");
-//       setMessages(response.data);
-//     } catch (err) {
-//       console.log(err);
-//     }
-//   }
-
-//   // Marca como lido ao abrir conversa
-//   async function handleSelectUser(user) {
-//     setSelectedUser(user);
-
-//     // Marca todas as mensagens não lidas desse remetente como lidas
-//     const unread = messages.filter(
-//       (m) => m.senderId === user.id && m.receiverId === currentUser.id && !m.read
-//     );
-//     for (const m of unread) {
-//       await api.patch(`/messages/${m.id}`, { read: true });
-//     }
-//     loadMessages();
-//   }
-
-//   return (
-//     <div style={styles.container}>
-//       <div style={styles.sidebarContainer}>
-//         <div style={styles.header}>
-//           <div style={styles.userInfo}>
-//             <img src={currentUser.avatar} alt={currentUser.name} style={styles.avatar} />
-//             <div>
-//               <h3 style={styles.userName}>{currentUser.name}</h3>
-//               <p style={styles.email}>{currentUser.email}</p>
-//             </div>
-//           </div>
-//           <button onClick={logout} style={styles.logoutButton}>Sair</button>
-//         </div>
-
-//         <Sidebar
-//           users={users}
-//           selectedUser={selectedUser}
-//           setSelectedUser={handleSelectUser} // ← usa o handler
-//           messages={messages}               // ← passa messages
-//           currentUser={currentUser}         // ← passa currentUser
-//         />
-//       </div>
-
-//       {selectedUser ? (
-//         <ChatBox
-//           currentUser={currentUser}
-//           selectedUser={selectedUser}
-//           onNewMessage={loadMessages} // ← atualiza sidebar ao enviar
-//         />
-//       ) : (
-//         <div style={styles.emptyContainer}>
-//           <h1 style={styles.emptyTitle}>Bem-vindo ao Chat 💬</h1>
-//           <p style={styles.emptyText}>Selecione uma conversa para começar</p>
-//         </div>
-//       )}
-//     </div>
-//   );
-// }
-
-// const styles = {
-//   container: {
-//     display: "flex",
-//     height: "100vh",
-//     background: "#f5f5f5",
-//   },
-
-//   sidebarContainer: {
-//     width: 350,
-//     background: "#fff",
-//     borderRight: "1px solid #ddd",
-//     display: "flex",
-//     flexDirection: "column",
-//   },
-
-//   header: {
-//     padding: 20,
-//     borderBottom: "1px solid #eee",
-//     display: "flex",
-//     justifyContent: "space-between",
-//     alignItems: "center",
-//   },
-
-//   userInfo: {
-//     display: "flex",
-//     alignItems: "center",
-//     gap: 12,
-//   },
-
-//   avatar: {
-//     width: 55,
-//     height: 55,
-//     borderRadius: "50%",
-//     objectFit: "cover",
-//   },
-
-//   userName: {
-//     margin: 0,
-//     fontSize: 18,
-//   },
-
-//   email: {
-//     margin: 0,
-//     color: "#777",
-//     fontSize: 13,
-//   },
-
-//   logoutButton: {
-//     border: "none",
-//     background: "#ff4d4d",
-//     color: "#fff",
-//     padding: "10px 16px",
-//     borderRadius: 10,
-//     cursor: "pointer",
-//     fontWeight: "bold",
-//   },
-
-//   emptyContainer: {
-//     flex: 1,
-//     display: "flex",
-//     flexDirection: "column",
-//     justifyContent: "center",
-//     alignItems: "center",
-//     color: "#777",
-//   },
-
-//   emptyTitle: {
-//     fontSize: 36,
-//     marginBottom: 10,
-//   },
-
-//   emptyText: {
-//     fontSize: 18,
-//   },
-// };
 import { useEffect, useState } from "react";
 import { api } from "../services/api";
 import Sidebar from "../components/Sidebar";
@@ -178,11 +14,7 @@ export default function Home({ currentUser, logout }) {
     loadMessages();
 
     const interval = setInterval(loadMessages, 1000);
-
-    const handleResize = () => {
-      setIsMobile(window.innerWidth <= 768);
-    };
-
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
     window.addEventListener("resize", handleResize);
 
     return () => {
@@ -226,106 +58,141 @@ export default function Home({ currentUser, logout }) {
     loadMessages();
   }
 
-  return (
-    <div
-      style={{
-        ...styles.container,
-        flexDirection: isMobile ? "column" : "row",
-      }}
-    >
-      {/* Sidebar */}
-      {(!isMobile || !selectedUser) && (
-        <div
-          style={{
-            ...styles.sidebarContainer,
-            width: isMobile ? "100%" : 350,
-            height: isMobile ? "100vh" : "100%",
-          }}
-        >
-          <div style={styles.header}>
-            <div style={styles.userInfo}>
-              <img
-                src={currentUser.avatar}
-                alt={currentUser.name}
-                style={styles.avatar}
-              />
+  function handleBack() {
+    setSelectedUser(null);
+  }
 
-              <div>
-                <h3 style={styles.userName}>{currentUser.name}</h3>
-                <p style={styles.email}>{currentUser.email}</p>
-              </div>
-            </div>
-
-            <button onClick={logout} style={styles.logoutButton}>
-              Sair
-            </button>
-          </div>
-
-          <Sidebar
-            users={users}
-            selectedUser={selectedUser}
-            setSelectedUser={handleSelectUser}
-            messages={messages}
-            currentUser={currentUser}
-          />
-        </div>
-      )}
-
-      {/* Chat */}
-      {selectedUser ? (
-        <div
-          style={{
-            flex: 1,
-            width: "100%",
-            height: "100vh",
-          }}
-        >
-          {isMobile && (
-            <button
-              onClick={() => setSelectedUser(null)}
-              style={styles.backButton}
-            >
-              ← Voltar
-            </button>
-          )}
-
+  // Mobile: mostra sidebar OU chat (nunca os dois)
+  if (isMobile) {
+    return (
+      <div style={styles.mobileRoot}>
+        {selectedUser ? (
+          // Tela de chat ocupa 100% da tela
           <ChatBox
             currentUser={currentUser}
             selectedUser={selectedUser}
             onNewMessage={loadMessages}
+            onBack={handleBack}
           />
-        </div>
-      ) : (
-        !isMobile && (
-          <div style={styles.emptyContainer}>
-            <h1 style={styles.emptyTitle}>Bem-vindo ao Chat 💬</h1>
-            <p style={styles.emptyText}>
-              Selecione uma conversa para começar
-            </p>
+        ) : (
+          // Tela de lista ocupa 100% da tela
+          <div style={styles.mobileSidebar}>
+            <div style={styles.header}>
+              <div style={styles.userInfo}>
+                <img
+                  src={currentUser.avatar}
+                  alt={currentUser.name}
+                  style={styles.avatar}
+                />
+                <div>
+                  <h3 style={styles.userName}>{currentUser.name}</h3>
+                  <p style={styles.email}>{currentUser.email}</p>
+                </div>
+              </div>
+              <button onClick={logout} style={styles.logoutButton}>
+                Sair
+              </button>
+            </div>
+
+            <Sidebar
+              users={users}
+              selectedUser={selectedUser}
+              setSelectedUser={handleSelectUser}
+              messages={messages}
+              currentUser={currentUser}
+            />
           </div>
-        )
+        )}
+      </div>
+    );
+  }
+
+  // Desktop: sidebar + chat lado a lado
+  return (
+    <div style={styles.desktopRoot}>
+      <div style={styles.sidebarContainer}>
+        <div style={styles.header}>
+          <div style={styles.userInfo}>
+            <img
+              src={currentUser.avatar}
+              alt={currentUser.name}
+              style={styles.avatar}
+            />
+            <div>
+              <h3 style={styles.userName}>{currentUser.name}</h3>
+              <p style={styles.email}>{currentUser.email}</p>
+            </div>
+          </div>
+          <button onClick={logout} style={styles.logoutButton}>
+            Sair
+          </button>
+        </div>
+
+        <Sidebar
+          users={users}
+          selectedUser={selectedUser}
+          setSelectedUser={handleSelectUser}
+          messages={messages}
+          currentUser={currentUser}
+        />
+      </div>
+
+      {selectedUser ? (
+        <ChatBox
+          currentUser={currentUser}
+          selectedUser={selectedUser}
+          onNewMessage={loadMessages}
+        />
+      ) : (
+        <div style={styles.emptyContainer}>
+          <h1 style={styles.emptyTitle}>Bem-vindo ao Chat 💬</h1>
+          <p style={styles.emptyText}>Selecione uma conversa para começar</p>
+        </div>
       )}
     </div>
   );
 }
 
 const styles = {
-  container: {
+  // Mobile
+  mobileRoot: {
     display: "flex",
-    height: "100vh",
+    flexDirection: "column",
+    height: "100dvh",      // dvh respeita barra do browser no mobile
+    overflow: "hidden",
     background: "#f5f5f5",
+  },
+
+  mobileSidebar: {
+    display: "flex",
+    flexDirection: "column",
+    height: "100%",
+    background: "#fff",
     overflow: "hidden",
   },
 
+  // Desktop
+  desktopRoot: {
+    display: "flex",
+    flexDirection: "row",
+    height: "100vh",
+    overflow: "hidden",
+    background: "#f5f5f5",
+  },
+
   sidebarContainer: {
+    width: 340,
+    flexShrink: 0,
     background: "#fff",
     borderRight: "1px solid #ddd",
     display: "flex",
     flexDirection: "column",
+    overflow: "hidden",
   },
 
   header: {
-    padding: 20,
+    flexShrink: 0,
+    padding: "16px 20px",
     borderBottom: "1px solid #eee",
     display: "flex",
     justifyContent: "space-between",
@@ -336,27 +203,37 @@ const styles = {
     display: "flex",
     alignItems: "center",
     gap: 12,
+    minWidth: 0,
   },
 
   avatar: {
-    width: 50,
-    height: 50,
+    width: 46,
+    height: 46,
     borderRadius: "50%",
     objectFit: "cover",
+    flexShrink: 0,
   },
 
   userName: {
     margin: 0,
-    fontSize: 16,
+    fontSize: 15,
+    fontWeight: 600,
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
   },
 
   email: {
     margin: 0,
-    color: "#777",
+    color: "#888",
     fontSize: 12,
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
   },
 
   logoutButton: {
+    flexShrink: 0,
     border: "none",
     background: "#ff4d4d",
     color: "#fff",
@@ -364,16 +241,7 @@ const styles = {
     borderRadius: 10,
     cursor: "pointer",
     fontWeight: "bold",
-  },
-
-  backButton: {
-    border: "none",
-    background: "#111",
-    color: "#fff",
-    padding: "10px 16px",
-    margin: 10,
-    borderRadius: 10,
-    cursor: "pointer",
+    fontSize: 14,
   },
 
   emptyContainer: {
@@ -382,15 +250,15 @@ const styles = {
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    color: "#777",
+    color: "#aaa",
   },
 
   emptyTitle: {
-    fontSize: 36,
+    fontSize: 32,
     marginBottom: 10,
   },
 
   emptyText: {
-    fontSize: 18,
+    fontSize: 16,
   },
 };
