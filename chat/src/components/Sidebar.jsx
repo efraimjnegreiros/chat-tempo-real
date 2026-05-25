@@ -18,7 +18,7 @@ export default function Sidebar({ users, selectedUser, setSelectedUser, messages
 
   return (
     <div style={styles.sidebar}>
-      <h2 style={{ padding: "0 0 12px 0", margin: 0, fontSize: 18 }}>Conversas</h2>
+      <h2 style={styles.title}>Conversas</h2>
 
       {users.map((user) => {
         const unread = getUnreadCount(user.id);
@@ -30,89 +30,146 @@ export default function Sidebar({ users, selectedUser, setSelectedUser, messages
             key={user.id}
             style={{
               ...styles.user,
-              background: isSelected ? "#f0f0f0" : "#fff",
+              background: isSelected ? "#f0f7ff" : "#fff",
+              borderLeft: isSelected ? "3px solid #0084ff" : "3px solid transparent",
             }}
             onClick={() => setSelectedUser(user)}
           >
+            {/* Avatar */}
             <img src={user.avatar} alt={user.name} style={styles.avatar} />
 
-            <div style={{ flex: 1, minWidth: 0 }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <span style={{ fontWeight: "bold", fontSize: 15 }}>{user.name}</span>
+            {/* Info */}
+            <div style={styles.info}>
+              {/* Nome + horário */}
+              <div style={styles.row}>
+                <span style={styles.name}>{user.name}</span>
                 {last && (
-                  <span style={{ fontSize: 11, color: "#999" }}>
+                  <span style={styles.time}>
                     {new Date(last.createdAt).toLocaleTimeString("pt-BR", {
-                      hour: "2-digit", minute: "2-digit",
+                      hour: "2-digit",
+                      minute: "2-digit",
                     })}
                   </span>
                 )}
               </div>
 
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 2 }}>
-                <span style={{
-                  fontSize: 13,
-                  color: "#999",
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                  whiteSpace: "nowrap",
-                  maxWidth: 170,
-                }}>
+              {/* Preview + bolinha */}
+              <div style={styles.row}>
+                <span style={styles.preview}>
                   {last
                     ? (last.senderId === currentUser.id ? "Você: " : "") + last.text
                     : "Nenhuma mensagem"}
                 </span>
-
-                {/* Bolinha de não lidas */}
                 {unread > 0 && (
-                  <span style={{
-                    background: "#25d366",
-                    color: "#fff",
-                    borderRadius: "50%",
-                    minWidth: 20,
-                    height: 20,
-                    fontSize: 11,
-                    fontWeight: "bold",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    padding: "0 5px",
-                    flexShrink: 0,
-                  }}>
-                    {unread}
-                  </span>
+                  <span style={styles.badge}>{unread}</span>
                 )}
               </div>
             </div>
           </div>
         );
       })}
+
+      {users.length === 0 && (
+        <p style={styles.empty}>Nenhum usuário encontrado</p>
+      )}
     </div>
   );
 }
 
 const styles = {
   sidebar: {
-    borderRight: "1px solid #ddd",
-    padding: "16px 12px",
-    background: "#fff",
-    overflowY: "auto",
     flex: 1,
+    overflowY: "auto",
+    padding: "12px 8px",
+    background: "#fff",
   },
+
+  title: {
+    padding: "0 8px 12px",
+    margin: 0,
+    fontSize: 17,
+    fontWeight: 700,
+    color: "#333",
+  },
+
   user: {
     display: "flex",
     alignItems: "center",
     gap: 12,
-    padding: "10px 12px",
+    padding: "10px 10px",
     borderRadius: 12,
     cursor: "pointer",
-    marginBottom: 4,
-    transition: "background 0.2s",
+    marginBottom: 2,
+    transition: "background 0.15s",
   },
+
   avatar: {
-    width: 50,
-    height: 50,
+    width: 48,
+    height: 48,
     borderRadius: "50%",
     objectFit: "cover",
     flexShrink: 0,
+  },
+
+  info: {
+    flex: 1,
+    minWidth: 0,        // essencial para o ellipsis funcionar dentro do flex
+    display: "flex",
+    flexDirection: "column",
+    gap: 3,
+  },
+
+  row: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    gap: 6,
+  },
+
+  name: {
+    fontWeight: 600,
+    fontSize: 15,
+    color: "#111",
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+  },
+
+  time: {
+    fontSize: 11,
+    color: "#aaa",
+    flexShrink: 0,
+  },
+
+  preview: {
+    fontSize: 13,
+    color: "#999",
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    flex: 1,           // ocupa o espaço restante, respeitando a bolinha
+    minWidth: 0,
+  },
+
+  badge: {
+    background: "#25d366",
+    color: "#fff",
+    borderRadius: 999,
+    minWidth: 20,
+    height: 20,
+    fontSize: 11,
+    fontWeight: "bold",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: "0 5px",
+    flexShrink: 0,
+  },
+
+  empty: {
+    textAlign: "center",
+    color: "#bbb",
+    fontSize: 14,
+    marginTop: 40,
   },
 };
