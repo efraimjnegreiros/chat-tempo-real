@@ -30,6 +30,9 @@ const defaultUsers = [
     email: "rubens@gmail.com",
     password: "123456",
     avatar: "https://i.ibb.co/67bZV8Sp/7fa29faa7b96.jpg",
+    "online": false,
+"lastSeen": null,
+"typingTo": null
   },
   {
     id: "2",
@@ -37,6 +40,9 @@ const defaultUsers = [
     email: "ingrid@gmail.com",
     password: "123456",
     avatar: "https://i.ibb.co/ndHvgh2/dc627ac05a2b.jpg",
+    "online": false,
+"lastSeen": null,
+"typingTo": null
   },
   {
     id: "3",
@@ -44,6 +50,9 @@ const defaultUsers = [
     email: "efraim@gmail.com",
     password: "123456",
     avatar: "https://i.ibb.co/b5Vzmq07/a3bb19f65225.jpg",
+    "online": false,
+"lastSeen": null,
+"typingTo": null
   },
 ];
 
